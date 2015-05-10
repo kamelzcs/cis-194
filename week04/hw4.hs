@@ -32,3 +32,14 @@ xor = foldr (\x accum -> if x then not accum else accum) False
 
 map' :: (a -> b) -> [a] -> [b]
 map' f = foldr (\x accum -> f x : accum) []
+
+myFoldl :: (a -> b -> a) -> a -> [b] -> a
+myFoldl f a bs = foldr (\b g x -> g (f x b)) id bs a
+
+sSundDelete :: Int -> [Int]
+sSundDelete n = [i+j+2*i*j|i<-[1..n], j<-[i..n]]
+
+sieveSundaram :: Int -> [Int]
+sieveSundaram n = let del = sSundDelete n in
+     2:[2*x+1 | x <- [1..n], not (x `elem` del)]
+
