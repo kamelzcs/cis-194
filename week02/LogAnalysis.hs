@@ -25,8 +25,8 @@ insert m (Node l lg r)
   | mT < logT = Node (insert m l) lg r
   | otherwise = Node l lg (insert m r)
   where
-    getTimeStamp = \x -> case x of (LogMessage _ t _)-> t
-                                   _ -> 0
+    getTimeStamp x = case x of (LogMessage _ t _)-> t
+                               _ -> 0
     mT = getTimeStamp m
     logT = getTimeStamp lg
 
@@ -44,8 +44,7 @@ inOrder (Node l lg r) = inOrder l ++ [lg] ++ inOrder r
 -- Exercise 5
 
 whatWentWrong :: [LogMessage] -> [String]
-whatWentWrong = map getMsg . filter rel . inOrder . build
-  where rel (LogMessage (Error e) _ _) = e >= 50
-        rel _ = False
+whatWentWrong = map getMsg . filter seri . inOrder . build
+  where seri (LogMessage (Error e) _ _) = e >= 50
+        seri _ = False
         getMsg (LogMessage _ _ m) = m
-        getMsg _ = ""
