@@ -15,13 +15,8 @@ foldTree xs = foldr insert Leaf xs
         count Leaf = 0
         count (Node _ l _ r) = 1 + count l + count r
         insert x Leaf = Node 0 Leaf x Leaf
-        insert x (Node h Leaf d Leaf) = Node (h + 1) (insert x Leaf) d Leaf
-        insert x (Node h l d Leaf) = Node h l d (insert x Leaf)
-        insert x (Node h Leaf d r) = Node h (insert x Leaf) d r
         insert x (Node h l d r)
             | height l > height r = Node h l d $ insert x r
-            | height l < height r = Node h (insert x l) d r
-            | count l < count r   = Node h (insert x l) d r
             | count l > count r   = Node h l d (insert x r)
             | otherwise           = let newl = insert x l
                                         newHeight = (1 + (height newl))
@@ -41,5 +36,4 @@ sSundDelete n = [i+j+2*i*j|i<-[1..n], j<-[i..n]]
 
 sieveSundaram :: Int -> [Int]
 sieveSundaram n = let del = sSundDelete n in
-     2:[2*x+1 | x <- [1..n], not (x `elem` del)]
-
+     [2*x+1 | x <- [1..n], not (x `elem` del)]
