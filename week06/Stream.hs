@@ -1,6 +1,6 @@
 module Stream where
 
-newtype Stream a = Stream { streamToList :: [a] }
+data Stream a = Stream { streamToList :: [a] }
 
 instance (Show a) => Show (Stream a) where
   show =  show . take 20 . streamToList
