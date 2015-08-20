@@ -81,9 +81,8 @@ dropJ n (Append _ l r)
 
 takeJ :: (Sized b, Monoid b) => Int -> JoinList b a ->JoinList b a
 takeJ _ Empty          = Empty
-takeJ n _  | n <= 0    = Empty
-takeJ _ Empty = Empty
-takeJ n j | n >= sz j = j
+takeJ n _  | n < 0    = Empty
+takeJ n j | n + 1 >= sz j = j
 takeJ n (Append _ l r)
   | n < lsize = takeJ n l
   | otherwise = l +++ takeJ (n - lsize) r
@@ -111,7 +110,7 @@ instance Buffer JLBuffer where
 
   -- replaceLine :: Int -> String -> JLBuffer -> JLBuffer
   replaceLine n str jlb =
-    takeJ n jlb +++ Single (scoreString str, Size 1) str +++ dropJ (n + 1) jlb
+    takeJ (n - 1) jlb +++ Single (scoreString str, Size 1) str +++ dropJ n jlb
 
   -- numLines :: JLBuffer -> Int
   numLines = sz
