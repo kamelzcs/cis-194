@@ -7,13 +7,9 @@ import Data.Monoid
 data Score = Score Int
              deriving (Eq, Show)
 
-instance Num Score where
-  (Score a) + (Score b) = Score (a+b)
-
 instance Monoid Score where
   mempty = Score 0
-  mappend = (+)
-  -- (Score a) `mappend` (Score b) = Score (a+b)
+  Score a `mappend` Score b = Score (a+b)
 
 score :: Char -> Score
 score c
@@ -27,4 +23,4 @@ score c
   | otherwise                       = Score 0
 
 scoreString :: String -> Score
-scoreString = (foldr (+) (Score 0)) . map score
+scoreString = foldr ((<>).score) $ Score 0
