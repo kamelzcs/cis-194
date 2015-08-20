@@ -121,6 +121,7 @@ instance Buffer JLBuffer where
 
 -- JLBuffer based editor
 
+main :: IO()
 main = runEditor editor jlb
   where jlb = fromString $ unlines
          [ "This buffer is for notes you don't want to save, and for"
