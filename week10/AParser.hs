@@ -66,6 +66,9 @@ posInt = Parser f
 first :: (a -> b) -> (a, c) -> (b, c)
 first f (x, y) = (f x, y)
 
+instance Functor Parser where
+  fmap f parser = Parser $ \s -> first f <$> runParser parser s
+
 -- Ex. 2 - implement an Applicative instance for Parser
 --
 --  pure a represents the parser which consumes no input and successfully returns a result of a.
@@ -74,9 +77,6 @@ first f (x, y) = (f x, y)
 -- and produces some value), then returns the result of applying the function to the
 -- value. However, if either p1 or p2 fails then the whole thing should also fail (put another
 -- way, p1 <*> p2 only succeeds if both p1 and p2 succeed).
-
-instance Functor Parser where
-  fmap f parser = Parser $ \s -> first f <$> runParser parser s
 
 instance Applicative Parser where
   pure a = Parser (\s -> Just (a, s))
@@ -135,7 +135,6 @@ instance Alternative Parser where
 --  intOrUppercase :: Parser ()
 -- 
 -- which parses either an integer value or an uppercase character, and fails otherwise.
-
 
 intOrUppercase :: Parser ()
 intOrUppercase = const () <$> posInt <|> const () <$> satisfy isUpper
