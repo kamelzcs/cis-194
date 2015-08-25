@@ -48,7 +48,7 @@ battle b = do
 
 invade :: Battlefield -> Rand StdGen Battlefield
 invade bf@(Battlefield a b)
-  | a < 2 || b == 0 = return bf
+  | a == 1 || b == 0 = return bf
   | otherwise = battle bf >>= invade
 
 successProb :: Battlefield -> Rand StdGen Double
